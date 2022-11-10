@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 import java.io.ByteArrayOutputStream;
+import java.io.PipedInputStream;
 import java.io.PrintStream;
 import java.net.URL;
 
@@ -18,24 +19,31 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class Controller extends Cats implements Initializable {
+    Target target = new Target();
+    Cats cats = new Cats();
+    Dogs dogs = new Dogs();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        staticTxtArea = stolenList;
 
         brownyWonTwo.setVisible(false);
         brownyWon.setVisible(false);
         brownyOkayButton.setVisible(false);
-        weapon[0] = new Item("Clipped Claw", 1);
-        weapon[1] = new Item("Sharp Claws", 3);
-        weapon[2] = new Item("Fish Bone", 5);
-        weapon[3] = new Item("Call a Friend", 10);
-        weapon[4] = new Item("Kage Bunshin No Jutsu", 50);
-        String[] catNames = {siomai.getName()+ " - starter", siopao.getName()+ " - 10k", chonki.getName() + " - 30k"};
+        weapon[0] = new Item("Clipped Claw - 300", 1);
+        weapon[1] = new Item("Sharp Claws - 800", 3);
+        weapon[2] = new Item("Fish Bone - 900", 5);
+        weapon[3] = new Item("Call a Friend - 1200", 10);
+        weapon[4] = new Item("Kage Bunshin No Jutsu - 2000", 50);
+        String[] catNames = {siomai.getName()+ " - starter", siopao.getName()+ " - 1000", chonki.getName() + " - 5000"};
         String[] catWeapon = {"Claw - +1%", "Sharp Claws - +3%", "Kage Bunshin No Jutsu - +50%", "Fish Bone - +5%", "Call a Friend - +10%"};
         chooseCat.getItems().addAll(catNames);
         chooseCat.setOnAction(this::getCatInfo);
         for (int i = 0; i < weapon.length; i++) {
             chooseWeapon.getItems().add(String.valueOf(weapon[i].getName()));
         }
+        chooseWeapon.setOnAction(this::getWeapon);
 
     }
     Cat siomai = new Cat("Siomai", "The Sneaky Mingming", 7, "breaking in");
@@ -43,9 +51,7 @@ public class Controller extends Cats implements Initializable {
     Cat chonki = new Cat("Chonki", "The Aggressive Mingming", 14, "breaking in");
     Item[] weapon = new Item[5];
 
-    Target target = new Target();
-    Cats cats = new Cats();
-    Dogs dogs = new Dogs();
+
 
     int cash;
 
@@ -57,7 +63,10 @@ public class Controller extends Cats implements Initializable {
     private ChoiceBox<String> chooseCat, chooseWeapon;
 
     @FXML
-    private TextArea stolenList;
+    private TextArea stolenList,retrievedList;
+
+    static TextArea staticTxtArea;
+
 
     int robValue, catStoled;
 
@@ -73,7 +82,7 @@ public class Controller extends Cats implements Initializable {
         if (dogs.catchCats(cats)) {
             robValue = (int) cats.getSumRobbedValue();
             playButton.setVisible(false);
-            if (Objects.equals(chooseCat.getValue(), "Siopao - 10k")) {
+            if (Objects.equals(chooseCat.getValue(), "Siopao - 1k")) {
                 brownyWon.setText("Browny gained 1% strength!");
             }
             brownyWon.setVisible(true);
@@ -95,32 +104,18 @@ public class Controller extends Cats implements Initializable {
             saveButton.setVisible(false);
 
         } else {
-
+            
             catStoled += cats.getSumRobbedValue();
             playButton.setVisible(true);
             brownyWon.setVisible(false);
             stolenValue.setText("₱"+catStoled);
             saveButton.setVisible(true);
+
+            if(cats.isSuccessfulRobbery()) {
+                catStoled += cats.getSumRobbedValue() * 0.2;
+            }
             cats.setSumRobbedValue(0);
 
-            if (cats.isSuccessfulRobbery()) {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                PrintStream ps = new PrintStream(baos);
-                PrintStream old = System.out;
-// Tell Java to use your special stream
-                System.setOut(ps);
-// Print some output: goes to your special stream
-// Put things back
-                System.out.flush();
-                System.setOut(old);
-// Show what happened
-                robDetails.setText(cats.getCatWon());
-                System.out.println("Here: " + baos.toString());
-                stolenList.setText(baos.toString());
-                stolenList.appendText("s");
-            }else{
-                robDetails.setText(cats.getCatWon());
-            }
         }
 
     }
@@ -142,12 +137,14 @@ public class Controller extends Cats implements Initializable {
         stolenValue.setText(" ");
         saveButton.setVisible(false);
         catStoled = 0;
+        stolenList.clear();
     }
 
     @FXML
     public void brownyButton() {
         visibilityCat();
         cats.setSumRobbedValue(0);
+        stolenList.clear();
     }
 
 
@@ -158,20 +155,20 @@ public class Controller extends Cats implements Initializable {
             case "Siomai - starter":
                 catName.setText(siomai.getName() + " - " + siomai.getNickname());
                 catInfo.setText("7 years of Age \n Expert in Sneaking");
-                cats.setCatSuccessPercentage(80);
-                dogs.setDogSuccessPercentage(30);
+                cats.setCatSuccessPercentage(50);
+                dogs.setDogSuccessPercentage(40);
                 break;
-            case "Siopao - 10k":
+            case "Siopao - 1000":
                 catName.setText(siopao.getName() + " - " + siopao.getNickname());
                 catInfo.setText("9 years of Age \n Expert in Breaking in");
-                cats.setCatSuccessPercentage(40);
-                dogs.setDogSuccessPercentage(30);
+                cats.setCatSuccessPercentage(70);
+                dogs.setDogSuccessPercentage(40);
                 break;
-            case "Chonki - 30k":
+            case "Chonki - 5000":
                 catName.setText(chonki.getName() + " - " + chonki.getNickname());
                 catInfo.setText("14 years of Age \n Expert in Beating");
-                cats.setSumRobbedValue(60);
-                dogs.setDogSuccessPercentage(30);
+                cats.setCatSuccessPercentage(80);
+                dogs.setDogSuccessPercentage(1);
                 break;
         }
     }
@@ -179,6 +176,8 @@ public class Controller extends Cats implements Initializable {
 
     public void getWeapon(ActionEvent event) {
         String weapon = chooseWeapon.getValue();
+        switch (weapon){
+        }
     }
 
 }

@@ -53,8 +53,8 @@ public class Cats {
 
             }
         } else {
-            System.out.println("Tried to rob the " + houses[randomBuildingIndex].getName() + " but they failed.");
-            setCatWon("Tried to rob the " + houses[randomBuildingIndex].getName() + " but they failed.");
+            System.out.println("Tried to rob the " + houses[randomBuildingIndex].getName() + " but he failed.");
+            setCatWon("Tried to rob the " + houses[randomBuildingIndex].getName() + " but he failed.");
 
         }
     }
