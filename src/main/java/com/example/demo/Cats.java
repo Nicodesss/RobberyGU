@@ -31,7 +31,6 @@ public class Cats {
     public boolean isSuccessfulRobbery() {
         int randomNumber = randomNumberGenerator.nextInt(101);
         int summarizedSuccessChange = getCatSuccessPercentage() ;
-        System.out.println(getCatSuccessPercentage() + "  " + randomNumber);
         if (randomNumber >= summarizedSuccessChange) {
             return false;
         }
@@ -40,9 +39,7 @@ public class Cats {
 
 
     public void letsRob(House[] houses) {
-       String[] stealItems = new String[2];
         int randomBuildingIndex = randomNumberGenerator.nextInt(houses.length );
-        System.out.println("-------------------------------");
         if (isSuccessfulRobbery()) {
             System.out.println("Successfully Robbed the following items from the " + houses[randomBuildingIndex].getName() + ":");
             setCatWon("Successfully Robbed the following items from the " + houses[randomBuildingIndex].getName() + ":");

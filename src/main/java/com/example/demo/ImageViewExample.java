@@ -25,10 +25,11 @@ public class ImageViewExample extends Application {
     private Thread reader2;
     boolean quit;
     private TextArea txtArea;
+
     @Override
     public void start(Stage stage) throws IOException {
 
-        //Setting the Scene object
+         //Setting the Scene object
         FXMLLoader fxmlLoader = new FXMLLoader(ImageViewExample.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
@@ -37,7 +38,7 @@ public class ImageViewExample extends Application {
         stage.setResizable(false);
         stage.show();
 
-     txtArea = Controller.staticTxtArea;
+        txtArea = Controller.staticTxtArea;
         executeReaderThread();
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -49,8 +50,6 @@ public class ImageViewExample extends Application {
                 System.exit(0);
             }
         });
-
-
     }
 
     public void executeReaderThread(){
@@ -59,9 +58,7 @@ public class ImageViewExample extends Application {
             PipedOutputStream pout = new PipedOutputStream(this.pipeIn);
             System.setOut(new PrintStream(pout, true));
         }
-        catch (IOException io)
-        { }
-        catch (SecurityException se)
+        catch (IOException | SecurityException ignored)
         { }
 
         try
@@ -69,10 +66,7 @@ public class ImageViewExample extends Application {
             PipedOutputStream pout2 = new PipedOutputStream(this.pipeIn2);
             System.setErr(new PrintStream(pout2, true));
         }
-        catch (IOException io)
-        {
-        }
-        catch (SecurityException se)
+        catch (IOException | SecurityException ignored)
         {
         }
 
@@ -94,18 +88,9 @@ public class ImageViewExample extends Application {
     }
 }
 
-/*
-* TODO - Add currency holding currency for cat
-*       - Add weapon values that connects to the win rate percentage of cats
-*       - disappear button and labels
-*              setting disappear for labels and buttons
-                            playButton.setVisible(false);
-                            catName.setVisible(false);
-        - add list items stolen
-        - Add + percentage if browny won
-        - Add thread
-        - add percentage button click % for browny till sell button clicked
-        - add images
 
-*
-* */
+//       TODO
+//        - add not accessible lack of money
+//        - Add + percentage if browny won
+//        - add percentage button click % for browny till sell button clicked
+//        - add images

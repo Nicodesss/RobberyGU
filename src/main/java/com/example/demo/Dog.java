@@ -3,7 +3,6 @@ package com.example.demo;
 public class Dog extends Individual {
 
 
-
     public Dog(String name, String nickname, int yearOfBorn, String expertIn) {
         super(name, nickname, yearOfBorn, expertIn);
     }

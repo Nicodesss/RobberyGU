@@ -93,7 +93,7 @@ public class ReaderThread implements Runnable{
             }
             catch (InterruptedException ie) {
             }
-            System.out.println("****************************Stealing********************************************************");
+//            System.out.println("****************************Stealing********************************************************");
 
         }
     }

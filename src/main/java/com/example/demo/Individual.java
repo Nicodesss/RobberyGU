@@ -4,9 +4,6 @@ public abstract class Individual {
     private String name;
     private String nickname;
     private int age;
-
-
-
     private String expertIn;
     private Item[] items;
 

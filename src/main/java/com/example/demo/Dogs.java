@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class Dogs {
 
-
     private int dogSuccessPercentage;
 
     private Dog dogs;
@@ -17,21 +16,21 @@ public class Dogs {
         dogs = browny;
     }
 
+
     public boolean catchCats(Cats cats) {
 
         if (areCatsCaught()) {
-            System.out.println(dogs.getName() + " managed to catch the cats");
             if (cats.getSumRobbedValue() > 0) {
-                System.out.println("The stolen items are recovered.");
                 System.out.println();
-                System.out.println("Cats overall items stolen value is ₱" + cats.getSumRobbedValue());
+                System.out.println("The stolen items are recovered.");
             } else {
+                System.out.println();
                 System.out.println("The cats couldn't steal anything.");
             }
             return true;
         } else {
-            System.out.println(dogs.getName() + " couldn't catch the cats.");
-            System.out.println("They managed to steal items valued ₱" + cats.getSumRobbedValue());
+//            System.out.println("They managed to steal items valued ₱" + cats.getSumRobbedValue());
+            System.out.println();
             return false;
         }
     }
@@ -39,7 +38,6 @@ public class Dogs {
     boolean areCatsCaught() {
         Random randomNumberGenerator = new Random();
         int dogRandom = randomNumberGenerator.nextInt(101);
-        System.out.println(getDogSuccessPercentage() + " " + dogRandom);
         return dogRandom < getDogSuccessPercentage();
     }
 
