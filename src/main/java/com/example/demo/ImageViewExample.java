@@ -28,7 +28,6 @@ public class ImageViewExample extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-
          //Setting the Scene object
         FXMLLoader fxmlLoader = new FXMLLoader(ImageViewExample.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());

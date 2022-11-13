@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.net.URL;
 
@@ -28,7 +30,12 @@ public class Controller extends Cats implements Initializable {
     int robValue, catStoled, cash, level;
     boolean isSiopaoBought = false;
     boolean isChonkiBought = false;
-    boolean isWeaponBought = false;
+    boolean isLevelOne = false;
+    boolean isLevelTwo = false;
+    boolean isLevelThree = false;
+    boolean isLevelFour = false;
+    boolean isLevelFive = false;
+    int savedValue;
     @FXML
     private Button playButton, brownyOkayButton, saveButton;
     @FXML
@@ -37,9 +44,14 @@ public class Controller extends Cats implements Initializable {
     private ChoiceBox<String> chooseCat, chooseWeapon;
     @FXML
     private TextArea stolenList;
+    @FXML
+    private ImageView brownyImage,catImage;
+
+    Image brownyImg = new Image("file:///C:/Users/nicol/IdeaProjects/demo/src/browny.png");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        brownyImage.setImage(brownyImg);
 
         staticTxtArea = stolenList;
 
@@ -52,7 +64,7 @@ public class Controller extends Cats implements Initializable {
         weapon[3] = new Item("Call a Friend - 4", 10);
         weapon[4] = new Item("Kage Bunshin No Jutsu - 5", 50);
         weapon[5] = new Item(" ", 50);
-        String[] catNames = {siomai.getName() + " - starter", siopao.getName() + " - ₱3000", chonki.getName() + " - ₱6000"};
+        String[] catNames = {siomai.getName() + " - starter", siopao.getName() + " - ₱3000", chonki.getName() + " - ₱6500"};
 
         chooseCat.getItems().addAll(catNames);
         chooseCat.setOnAction(this::getCatInfo);
@@ -60,7 +72,6 @@ public class Controller extends Cats implements Initializable {
             chooseWeapon.getItems().add(String.valueOf(weapon[i].getName()));
         }
         chooseWeapon.setOnAction(this::getWeapon);
-
     }
 
     @FXML
@@ -71,21 +82,18 @@ public class Controller extends Cats implements Initializable {
         gameStart();
     }
     public void siopaoBought() {
-        if (Integer.parseInt(summedRobValue.getText()) > 3000) {
+        if (Integer.parseInt(summedRobValue.getText()) > 3000 && !isSiopaoBought) {
+            savedValue = savedValue - 3000;
             isSiopaoBought = true;
-        }else{
-            isSiopaoBought = false;
+
         }
     }
-
     public void chonkiBought() {
-        if (Integer.parseInt(summedRobValue.getText()) > 6500) {
+        if (Integer.parseInt(summedRobValue.getText()) > 6500 && !isChonkiBought) {
+            savedValue = savedValue - 6500;
             isChonkiBought = true;
-        }else{
-            isChonkiBought = false;
         }
     }
-
 
     public void visibilityCat() {
         saveButton.setVisible(false);
@@ -94,7 +102,7 @@ public class Controller extends Cats implements Initializable {
         brownyWonTwo.setVisible(false);
         brownyOkayButton.setVisible(false);
     }
-        int savedValue;
+
     @FXML
     public void sellButton() {
         savedValue += catStoled;
@@ -116,44 +124,42 @@ public class Controller extends Cats implements Initializable {
         String name = chooseCat.getValue();
         switch (name) {
             case "Siomai - starter":
+                Image siomaiImg = new Image("file:///C:/Users/nicol/IdeaProjects/demo/src/siomai.png");
+                catImage.setImage(siomaiImg);
                 catName.setText(siomai.getName() + " - " + siomai.getNickname());
                 catInfo.setText(" 7 years of Age \n Expert in Sneaking");
                 cats.setCatSuccessPercentage(99);
                 dogs.setDogSuccessPercentage(1);
                 playButton.setVisible(true);
-                if (!isWeaponBought) {
-                    playButton.setVisible(false);
-                } else if (Objects.equals(chooseWeapon.getValue(), " ")) {
-                    playButton.setVisible(true);
-                }
                 break;
             case "Siopao - ₱3000":
-                int siopaoPrice = 3000;
+                Image siopaoImg = new Image("file:///C:/Users/nicol/IdeaProjects/demo/src/Siopao.png");
+                catImage.setImage(siopaoImg);
                 siopaoBought();
+                catName.setText("(locked) "+siopao.getName() + " - " + siopao.getNickname());
+                catInfo.setText(" 9 years of Age \n Expert in Breaking in");
                 if (isSiopaoBought) {
-                    summedRobValue.setText((String.valueOf(savedValue - 3000)));
-                    savedValue = savedValue - siopaoPrice;
                     catName.setText(siopao.getName() + " - " + siopao.getNickname());
-                    catInfo.setText(" 9 years of Age \n Expert in Breaking in");
                     cats.setCatSuccessPercentage(70);
                     dogs.setDogSuccessPercentage(35);
                     playButton.setVisible(true);
-
+                    summedRobValue.setText(String.valueOf(savedValue));
                 } else {
                     playButton.setVisible(false);
                 }
                 break;
             case "Chonki - ₱6500":
+                Image chonkiImg = new Image("file:///C:/Users/nicol/IdeaProjects/demo/src/Chonki.png");
+                catImage.setImage(chonkiImg);
+                catName.setText("(locked) "+chonki.getName() + " - " + chonki.getNickname());
+                catInfo.setText(" 14 years of Age \n Expert in Beating");
                 chonkiBought();
                 if (isChonkiBought) {
-                    int chonkiPrice = 6500;
-                    summedRobValue.setText((String.valueOf(savedValue - 6500)));
-                    savedValue = savedValue - chonkiPrice;
                     catName.setText(chonki.getName() + " - " + chonki.getNickname());
-                    catInfo.setText(" 14 years of Age \n Expert in Beating");
                     cats.setCatSuccessPercentage(85);
                     dogs.setDogSuccessPercentage(30);
                     playButton.setVisible(true);
+                    summedRobValue.setText(String.valueOf(savedValue));
                 } else {
                     playButton.setVisible(false);
                 }
@@ -167,116 +173,126 @@ public class Controller extends Cats implements Initializable {
             case " ":
                 if (Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
                     playButton.setVisible(true);
-                }else if (!isChonkiBought){
-                    playButton.setVisible(false);
-                }else if (!isSiopaoBought){
-                    playButton.setVisible(false);
-                }else if(Objects.equals(chooseCat.getValue(), "Siopao - ₱3000") && isSiopaoBought){
-                    playButton.setVisible(true);
-                }else if(Objects.equals(chooseCat.getValue(), "Chonki - ₱6000") && isChonkiBought){
-                    playButton.setVisible(true);
+                }
+                else if (Objects.equals(chooseCat.getValue(), "Siopao - ₱3000")) {
+                    if (isSiopaoBought) {
+                        playButton.setVisible(true);
+                    } else {
+                        playButton.setVisible(false);
+                    }
+                }
+                else if (Objects.equals(chooseCat.getValue(), "Chonki - ₱6500")) {
+                    if (isChonkiBought) {
+                        playButton.setVisible(true);
+                    } else {
+                        playButton.setVisible(false);
+                    }
                 }
                 break;
             case "Clipped Claws - 1":
-                if (levelCat.getText().contains("3") || levelCat.getText().contains("4") || levelCat.getText().contains("MAX") || levelCat.getText().contains("2") || levelCat.getText().contains("1")) {
-                    if (!isChonkiBought) {
-                        currentWeapon.setText("Using Clipped Claws as a weapon");
-                        playButton.setVisible(false);
-                        isWeaponBought = false;
-                    }if (!isSiopaoBought) {
-                        currentWeapon.setText("Using Clipped Claws as a weapon");
-                        playButton.setVisible(false);
-                        isWeaponBought = false;
-                    }if (Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
-                        currentWeapon.setText("Using Clipped Claws as a weapon");
+                if (isLevelOne && Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
+                    playButton.setVisible(true);
+                }
+                else if (isLevelOne && Objects.equals(chooseCat.getValue(), "Siopao - ₱3000")) {
+                    if (isSiopaoBought) {
                         playButton.setVisible(true);
-                        isWeaponBought = true;
+                    } else {
+                        playButton.setVisible(false);
+                    }
+                }
+                else if (isLevelOne && Objects.equals(chooseCat.getValue(), "Chonki - ₱6500")) {
+                    if (isChonkiBought) {
+                        playButton.setVisible(true);
+                    } else {
+                        playButton.setVisible(false);
                     }
                 } else {
-                    playButton.setVisible(true);
-                    isWeaponBought = true;
+                    playButton.setVisible(false);
                 }
                 break;
             case "Sharp Claws - 2":
-                if (levelCat.getText().contains("3") || levelCat.getText().contains("4") || levelCat.getText().contains("MAX") || levelCat.getText().contains("2")) {
+                if (isLevelTwo && Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
+                    playButton.setVisible(true);
+                }
+               else if (isLevelTwo && Objects.equals(chooseCat.getValue(), "Siopao - ₱3000")) {
+                    if (isSiopaoBought) {
+                        playButton.setVisible(true);
+                    } else {
+                        playButton.setVisible(false);
+                    }
+                }
+                else if (isLevelTwo && Objects.equals(chooseCat.getValue(), "Chonki - ₱6500")) {
                     if (isChonkiBought) {
-                        currentWeapon.setText("Using Sharp Claws as a weapon");
                         playButton.setVisible(true);
-                        isWeaponBought = true;
-                    } else if (isSiopaoBought) {
-                        currentWeapon.setText("Using Sharp Claws as a weapon");
-                        playButton.setVisible(true);
-                        isWeaponBought = true;
-                    } else if (Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
-                        currentWeapon.setText("Using Sharp Claws as a weapon");
-                        playButton.setVisible(true);
-                        isWeaponBought = true;
+                    } else {
+                        playButton.setVisible(false);
                     }
                 } else {
                     playButton.setVisible(false);
-                    isWeaponBought = false;
-
                 }
                 break;
+
             case "Tuna Bone - 3":
-                if (levelCat.getText().contains("3") || levelCat.getText().contains("4") || levelCat.getText().contains("MAX")) {
+                if (isLevelThree && Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
+                    playButton.setVisible(true);
+                }
+               else if (isLevelThree && Objects.equals(chooseCat.getValue(), "Siopao - ₱3000")) {
+                    if (isSiopaoBought) {
+                        playButton.setVisible(true);
+                    } else {
+                        playButton.setVisible(false);
+                    }
+                }
+               else if (isLevelThree && Objects.equals(chooseCat.getValue(), "Chonki - ₱6500")) {
                     if (isChonkiBought) {
-                        currentWeapon.setText("Using Tuna Bone as a weapon");
                         playButton.setVisible(true);
-                        isWeaponBought = true;
-                    } else if (isSiopaoBought) {
-                        currentWeapon.setText("Using Tuna Bone as a weapon");
-                        playButton.setVisible(true);
-                        isWeaponBought = true;
-                    } else if (Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
-                        currentWeapon.setText("Using Tuna Bone as a weapon");
-                        playButton.setVisible(true);
-                        isWeaponBought = true;
+                    } else {
+                        playButton.setVisible(false);
                     }
                 } else {
                     playButton.setVisible(false);
-                    isWeaponBought = false;
-
                 }
                 break;
             case "Call a Friend - 4":
-                if (levelCat.getText().contains("4") || levelCat.getText().contains("MAX")) {
+                if (isLevelFour && Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
+                    playButton.setVisible(true);
+                }
+              else if (isLevelFour && Objects.equals(chooseCat.getValue(), "Siopao - ₱3000")) {
+                    if (isSiopaoBought) {
+                        playButton.setVisible(true);
+                    } else {
+                        playButton.setVisible(false);
+                    }
+                }
+               else if (isLevelFour && Objects.equals(chooseCat.getValue(), "Chonki - ₱6500")) {
                     if (isChonkiBought) {
-                        currentWeapon.setText("Calls a friend to help him rob");
                         playButton.setVisible(true);
-                        isWeaponBought = true;
-                    } else if (isSiopaoBought) {
-                        currentWeapon.setText("Calls a friend to help him rob");
-                        playButton.setVisible(true);
-                        isWeaponBought = true;
-                    } else if (Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
-                        currentWeapon.setText("Calls a friend to help him rob");
-                        playButton.setVisible(true);
-                        isWeaponBought = true;
+                    } else {
+                        playButton.setVisible(false);
                     }
                 } else {
                     playButton.setVisible(false);
-                    isWeaponBought = false;
                 }
                 break;
             case "Kage Bunshin No Jutsu - 5":
-                if (Objects.equals(levelCat.getText(), "MAX")) {
+                if (isLevelFive && Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
+                    playButton.setVisible(true);
+                }
+                else if (isLevelFive && Objects.equals(chooseCat.getValue(), "Siopao - ₱3000")) {
+                    if (isSiopaoBought) {
+                        playButton.setVisible(true);
+                    } else {
+                        playButton.setVisible(false);
+                    }
+                }
+                else if (isLevelFive && Objects.equals(chooseCat.getValue(), "Chonki - ₱6500")) {
                     if (isChonkiBought) {
-                        currentWeapon.setText("Duplicates himself");
                         playButton.setVisible(true);
-                        isWeaponBought = true;
-                    } else if (isSiopaoBought) {
-                        currentWeapon.setText("Duplicates himself");
-                        playButton.setVisible(true);
-                        isWeaponBought = true;
-                    } else if (Objects.equals(chooseCat.getValue(), "Siomai - starter")) {
-                        currentWeapon.setText("Duplicates himself");
-                        playButton.setVisible(true);
-                        isWeaponBought = true;
+                    } else {
+                        playButton.setVisible(false);
                     }
                 } else {
                     playButton.setVisible(false);
-                    isWeaponBought = false;
                 }
                 break;
         }
@@ -350,14 +366,19 @@ public class Controller extends Cats implements Initializable {
 
         if (level >= 600 && level < 1000) {
             levelCat.setText("1");
+            isLevelOne = true;
         } else if (level >= 1500 && level < 2500) {
             levelCat.setText("2");
+            isLevelTwo = true;
         } else if (level >= 2500 && level < 3500) {
             levelCat.setText("3");
+            isLevelThree = true;
         } else if (level >= 3500 && level < 4500) {
             levelCat.setText("4");
+            isLevelFour = true;
         } else if (level > 4500) {
             levelCat.setText("MAX");
+            isLevelFive = true;
         }
     }
 
