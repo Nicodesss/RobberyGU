@@ -135,9 +135,13 @@ public class Controller extends Cats implements Initializable {
             case "Siopao - ₱3000":
                 Image siopaoImg = new Image("file:///C:/Users/nicol/IdeaProjects/demo/src/Siopao.png");
                 catImage.setImage(siopaoImg);
+                if (!isSiopaoBought) {
+                    catName.setText("(locked) "+siopao.getName() + " - " + siopao.getNickname());
+                    catInfo.setText(" 9 years of Age \n Expert in Breaking in");
+                    System.out.println("Siopao is still LOCKED!");
+                }
                 siopaoBought();
-                catName.setText("(locked) "+siopao.getName() + " - " + siopao.getNickname());
-                catInfo.setText(" 9 years of Age \n Expert in Breaking in");
+
                 if (isSiopaoBought) {
                     catName.setText(siopao.getName() + " - " + siopao.getNickname());
                     cats.setCatSuccessPercentage(70);
@@ -151,12 +155,15 @@ public class Controller extends Cats implements Initializable {
             case "Chonki - ₱6500":
                 Image chonkiImg = new Image("file:///C:/Users/nicol/IdeaProjects/demo/src/Chonki.png");
                 catImage.setImage(chonkiImg);
-                catName.setText("(locked) "+chonki.getName() + " - " + chonki.getNickname());
-                catInfo.setText(" 14 years of Age \n Expert in Beating");
+                if (!isChonkiBought) {
+                    catName.setText("(locked) "+chonki.getName() + " - " + chonki.getNickname());
+                    catInfo.setText(" 14 years of Age \n Expert in Beating");
+                    System.out.println("Chonki is still LOCKED!");
+                }
                 chonkiBought();
                 if (isChonkiBought) {
                     catName.setText(chonki.getName() + " - " + chonki.getNickname());
-                    cats.setCatSuccessPercentage(85);
+                    cats.setCatSuccessPercentage(90);
                     dogs.setDogSuccessPercentage(30);
                     playButton.setVisible(true);
                     summedRobValue.setText(String.valueOf(savedValue));

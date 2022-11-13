@@ -32,7 +32,7 @@ public class ImageViewExample extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(ImageViewExample.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        stage.setTitle("Displaying Image");
+        stage.setTitle("Cats and Browny");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -83,13 +83,16 @@ public class ImageViewExample extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
 
 
 //       TODO
-//        - add not accessible lack of money
-//        - Add + percentage if browny won
+//        - Add + percentage if browny won if else increment
 //        - add percentage button click % for browny till sell button clicked
-//        - add images
+//        - add images for weapon
+//        - modify win rate cats FAIR GAME
+//        - Add design~!!! pref css
+//        - Add sout if leveled up CAPS!!
+//        - Add sout if cat bought CAPS!!
