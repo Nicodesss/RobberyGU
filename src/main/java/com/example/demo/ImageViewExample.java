@@ -89,10 +89,7 @@ public class ImageViewExample extends Application {
 
 
 //       TODO
-//        - Add + percentage if browny won if else increment
-//        - add percentage button click % for browny till sell button clicked
 //        - add images for weapon
 //        - modify win rate cats FAIR GAME
 //        - Add design~!!! pref css
-//        - Add sout if leveled up CAPS!!
 //        - Add sout if cat bought CAPS!!
